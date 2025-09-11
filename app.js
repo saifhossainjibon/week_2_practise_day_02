@@ -7,34 +7,30 @@ const showSearchMeal = () => {
   const inputFieldText = input.value;
   input.value = "";
   showDetails.innerHTML = "";
+  mealContainer.textContent = "";
   if (inputFieldText === "") {
-    document.getElementById("error-text").innerText = "Please write a meal name";
-    bookContainer.innerHTML = "";
-    resultDiv.textContent = "";
+    errorText.innerText = "Please write a meal name";
   } else {
     fetch(
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${inputFieldText}`
     )
       .then((res) => res.json())
-      .then((data) => displayBooks(data.meals));
+      .then((data) => displayMeals(data.meals));
   }
 };
 
-const displayBooks = (meals) => {
+const displayMeals = (meals) => {
   if (!meals) {
     errorText.innerText = "No meals found";
     return;
   }
   errorText.innerText = "";
-  mealContainer.textContent = "";
+  
   meals.forEach((meal) => {
     const div = document.createElement("div");
     div.classList.add("col");
     div.innerHTML = `
-      <div class="card pb-4" style="width: 15rem;" onclick="showMealDetails('${
-        meal.idMeal
-      }',
-      )">
+      <div class="card pb-4" style="width: 15rem;" onclick="showMealDetails('${meal.idMeal}')">
         <img src="${meal.strMealThumb}" class="card-img-top" alt="${
       meal.strMeal
     }" />
